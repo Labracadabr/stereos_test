@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Проверка договоров поставки</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <h1>Проверка договоров поставки</h1>
+  <div class="controls">
+    <label>Дата проверки <input type="date" id="checkDate" value="2026-03-10"></label>
+    <label class="button primary">Загрузить TXT…<input type="file" id="fileInput" accept=".txt,text/plain" multiple hidden></label>
+    <button id="demoBtn" title="Загрузить 6 учебных файлов из папки samples">Демо-файлы</button>
+    <button id="clearBtn">Очистить</button>
+  </div>
+</header>
+
+<main>
+  <div class="left">
+    <section id="docsSection">
+      <h2>Документы <span class="muted" id="docsCount"></span></h2>
+      <p class="muted" id="emptyHint">Загрузите договоры и связанные документы (TXT, UTF-8 или Windows-1251). Можно добавлять файлы по одному.</p>
+      <ul id="docList" class="doc-list"></ul>
+    </section>
+
+    <section id="tableSection" hidden>
+      <h2>Условия договоров на <span id="tableDate"></span></h2>
+      <div class="table-wrap"><table id="contractsTable">
+        <thead><tr><th>Договор</th><th>Поставщик</th><th>Сумма, ₽</th><th>Срок поставки</th><th>Внимание</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+      <p class="muted small">Изменения условий учитываются только по подписанным обеими сторонами допсоглашениям, вступившим в силу к дате проверки. Нажмите на строку, чтобы увидеть основания.</p>
+      <div id="details"></div>
+    </section>
+
+    <section id="askSection" hidden>
+      <h2>Вопросы</h2>
+      <div class="presets" id="presets"></div>
+      <form id="askForm">
+        <input id="question" placeholder="Например: Какова сумма договора STN-102?" autocomplete="off">
+        <button class="primary">Спросить</button>
+      </form>
+      <div id="answer"></div>
+    </section>
+  </div>
+
+  <aside class="right">
+    <section id="viewer">
+      <h2 id="viewerTitle">Исходный текст</h2>
+      <div id="viewerMeta" class="muted small">Нажмите на ссылку-источник, чтобы открыть абзац документа.</div>
+      <div id="viewerBody"></div>
+    </section>
+  </aside>
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

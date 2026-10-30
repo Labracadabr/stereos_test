@@ -1,0 +1,65 @@
+:root {
+  --bg: #f6f7f9; --card: #fff; --text: #1d2330; --muted: #6b7280; --border: #dde1e7;
+  --accent: #2557d6; --ok: #1d7a46; --warn: #a35a00; --warn-bg: #fff4e0;
+  --bad: #b42318; --bad-bg: #fdecea; --info-bg: #e8f0ff; --ok-bg: #e7f6ed; --mark: #ffe58a;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--text); background: var(--bg); }
+header { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;
+  padding: 12px 20px; background: var(--card); border-bottom: 1px solid var(--border); }
+h1 { font-size: 18px; margin: 0; }
+h2 { font-size: 16px; margin: 0 0 10px; }
+h3 { font-size: 15px; margin: 4px 0 8px; }
+h4 { font-size: 14px; margin: 14px 0 4px; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button, .button { font: inherit; padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px;
+  background: var(--card); color: var(--text); cursor: pointer; }
+.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+button.link { border: 0; background: none; color: var(--muted); padding: 0 4px; font-size: 16px; }
+input { font: inherit; padding: 5px 8px; border: 1px solid var(--border); border-radius: 6px; }
+main { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 16px; padding: 16px 20px; }
+section { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; }
+.right section { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; }
+.muted { color: var(--muted); }
+.small { font-size: 12px; }
+.doc-list { list-style: none; padding: 0; margin: 0; }
+.doc-list li { padding: 4px 0; border-bottom: 1px dashed var(--border); }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; vertical-align: top; padding: 8px; border-bottom: 1px solid var(--border); }
+th { font-weight: 600; font-size: 12px; color: var(--muted); }
+tbody tr { cursor: pointer; }
+tbody tr:hover { background: #fafbfd; }
+tbody tr.selected { background: var(--info-bg); }
+.value { font-weight: 600; }
+.value.no_data { color: var(--bad); }
+.value.review { color: var(--warn); }
+.proposal { color: var(--warn); }
+.badge { display: inline-block; font-size: 11px; padding: 1px 6px; border-radius: 10px; margin: 1px 0; background: var(--bg); }
+.badge.applied { background: var(--ok-bg); color: var(--ok); }
+.badge.proposal, .badge.not_effective { background: var(--warn-bg); color: var(--warn); }
+.badge.needs_review, .badge.no_data { background: var(--bad-bg); color: var(--bad); }
+.badge.neutral { background: var(--info-bg); color: var(--accent); }
+a { color: var(--accent); }
+.card { border-top: 1px solid var(--border); margin-top: 12px; padding-top: 8px; }
+blockquote { margin: 4px 0 8px; padding: 6px 10px; border-left: 3px solid var(--border); background: var(--bg); font-size: 13px; }
+blockquote .src { font-size: 12px; white-space: nowrap; }
+.issue { color: var(--bad); background: var(--bad-bg); padding: 4px 8px; border-radius: 4px; margin: 4px 0; font-size: 13px; }
+.presets { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+.presets button { text-align: left; }
+#askForm { display: flex; gap: 8px; }
+#askForm input { flex: 1; min-width: 0; }
+.answer-text { white-space: normal; margin-bottom: 8px; }
+.answer-item { margin-top: 8px; }
+.para { display: flex; gap: 10px; padding: 3px 4px; border-radius: 4px; }
+.para.current { background: var(--info-bg); }
+.ln { color: var(--muted); min-width: 22px; text-align: right; user-select: none; font-size: 12px; padding-top: 1px; }
+mark { background: var(--mark); }
+@media (max-width: 900px) {
+  main { grid-template-columns: 1fr; padding: 12px 16px; }
+  .right section { position: static; max-height: none; }
+  table, tbody, tr, td { display: block; }
+  thead { display: none; }
+  tbody tr { border-bottom: 2px solid var(--border); padding: 6px 0; }
+  td { border: 0; padding: 4px 0; }
+}
+.table-wrap { overflow-x: auto; }

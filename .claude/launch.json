@@ -1,0 +1,6 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {"name": "contract-checker", "runtimeExecutable": "python", "runtimeArgs": ["run.py"], "port": 8000}
+  ]
+}
