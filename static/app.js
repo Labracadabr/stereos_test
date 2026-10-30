@@ -218,10 +218,53 @@ function openSource({file, line, start, end}) {
 
 // ---------------------------------------------------------------- events
 
+const isTxt = (f) => /\.txt$/i.test(f.name) || f.type === 'text/plain';
+
 async function addFiles(fileList) {
-  for (const f of fileList) state.files.set(f.name, await readFileB64(f));
-  await refresh();
+  const all = [...fileList];
+  const accepted = all.filter(isTxt);
+  const skipped = all.filter((f) => !isTxt(f)).map((f) => f.name);
+  const replaced = accepted.filter((f) => state.files.has(f.name)).map((f) => f.name);
+  const contents = await Promise.all(accepted.map(readFileB64));
+  accepted.forEach((f, i) => state.files.set(f.name, contents[i]));
+
+  const notes = [];
+  if (accepted.length) notes.push(`Добавлено файлов: ${accepted.length}.`);
+  if (replaced.length) notes.push(`Заменены файлы с тем же именем: ${replaced.join(', ')}.`);
+  if (skipped.length) notes.push(`Пропущены (не TXT): ${skipped.join(', ')}.`);
+  $('uploadNote').textContent = notes.join(' ');
+  $('uploadNote').className = 'small ' + (skipped.length ? 'issue' : 'muted');
+  $('uploadNote').hidden = !notes.length;
+  if (accepted.length) await refresh();
 }
+
+// Drag-and-drop: files can be dropped anywhere on the page; the drop zone lights up while dragging.
+let dragDepth = 0;
+const hasFiles = (e) => [...(e.dataTransfer?.types ?? [])].includes('Files');
+document.addEventListener('dragenter', (e) => {
+  if (!hasFiles(e)) return;
+  e.preventDefault();
+  if (dragDepth++ === 0) document.body.classList.add('dragging');
+});
+document.addEventListener('dragover', (e) => {
+  if (!hasFiles(e)) return;
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'copy';
+});
+document.addEventListener('dragleave', (e) => {
+  if (hasFiles(e) && --dragDepth <= 0) { dragDepth = 0; document.body.classList.remove('dragging'); }
+});
+document.addEventListener('drop', (e) => {
+  if (!hasFiles(e)) return;
+  e.preventDefault();
+  dragDepth = 0;
+  document.body.classList.remove('dragging');
+  addFiles(e.dataTransfer.files).catch(showError);
+});
+$('dropZone').addEventListener('click', () => $('fileInput').click());
+$('dropZone').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); $('fileInput').click(); }
+});
 
 document.addEventListener('click', (e) => {
   const cite = e.target.closest('.cite');
@@ -254,7 +297,12 @@ document.addEventListener('click', (e) => {
 
 $('fileInput').addEventListener('change', (e) => { addFiles(e.target.files).catch(showError); e.target.value = ''; });
 $('checkDate').addEventListener('change', () => refresh().catch(showError));
-$('clearBtn').addEventListener('click', () => { state.files.clear(); state.viewing = null; refresh(); });
+$('clearBtn').addEventListener('click', () => {
+  state.files.clear();
+  state.viewing = null;
+  $('uploadNote').hidden = true;
+  refresh();
+});
 $('demoBtn').addEventListener('click', async () => {
   const data = await (await fetch('/api/samples')).json();
   for (const f of data.files) state.files.set(f.name, f.content_b64);
