@@ -21,7 +21,11 @@
   <div class="left">
     <section id="docsSection">
       <h2>Документы <span class="muted" id="docsCount"></span></h2>
-      <p class="muted" id="emptyHint">Загрузите договоры и связанные документы (TXT, UTF-8 или Windows-1251). Можно добавлять файлы по одному.</p>
+      <div id="dropZone" class="drop-zone" role="button" tabindex="0">
+        <b>Перетащите TXT-файлы сюда</b> или <span class="linklike">выберите на компьютере</span> — можно сразу несколько.
+        <div class="muted small" id="emptyHint">Договоры, допсоглашения, письма, проекты. Кодировка UTF-8 или Windows-1251. Файлы можно добавлять и по одному.</div>
+      </div>
+      <div id="uploadNote" class="small" hidden></div>
       <ul id="docList" class="doc-list"></ul>
     </section>
 
